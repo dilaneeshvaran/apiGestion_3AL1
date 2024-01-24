@@ -3,6 +3,7 @@ package org.example;
 import java.util.List;
 
 public class User {
+    public int userid;
     public  String name;
     public  String email;
     List <Stack> devSack;
