@@ -1,0 +1,9 @@
+org\example\Equipe.class
+org\example\DevStack.class
+org\example\Main.class
+repository\UserRepository.class
+org\example\Stack.class
+BDD\Database.class
+org\example\Projet.class
+org\example\Competance.class
+modele\User.class

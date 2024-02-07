@@ -1,40 +1,39 @@
 package modele;
 
-import org.example.Competance;
-
 import java.util.List;
 
 public class User {
-    public int userid;
-    public  String name;
-    public  String email;
-    List <Competance> devCompetance;
+    private String mail;
+    private String name;
+    private List<String> competence;
 
-    public User(String name, String email, List <Competance> sackList) {
+    public User(String mail, String name, List<String> competence) {
+        this.mail = mail;
         this.name = name;
-        this.email = email;
-        this.devCompetance = sackList;
+        this.competence = competence;
     }
 
-    public User(int userid, String name, String email) {
-        this.userid = userid;
-        this.name = name;
-        this.email = email;
+    public String getMail() {
+        return this.mail;
     }
 
-    public int getUserid(int last_inserted_id) {
-        return userid;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public String getEmail() {
-        return email;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Competance> getDevCompetance() {
-        return devCompetance;
+    public List<String> getCompetence() {
+        return competence;
+    }
+
+    public void setCompetence(List<String> competence) {
+        this.competence = competence;
     }
 }

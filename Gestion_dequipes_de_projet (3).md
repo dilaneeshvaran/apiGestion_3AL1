@@ -1,4 +1,5 @@
 # Gestion d'équipes de projet
+
 Ce TP consiste à créer un système pour gérer les équipes de devs d'un éditeur de logiciels.
 
 Le management reçoit une demande de projet qui liste tous les détails nécessaires pour sa réalisation.
@@ -9,13 +10,7 @@ Vous êtes en charge de réaliser la partie chargée de gérer les projets et le
 
 ## Le projet :
 
-La demande d'un nouveau projet contient :
-	- le nom du projet
-	- une priorité : normale, best effort, critique
-	- une description
-	- une date de début qui est forcément dans le futur
-	- une date de fin (obligatoirement après la date de début)
-	- une stack contenant la liste des technos nécessaires et le nombre de devs requis par techno
+La demande d'un nouveau projet contient : - le nom du projet - une priorité : normale, best effort, critique - une description - une date de début qui est forcément dans le futur - une date de fin (obligatoirement après la date de début) - une stack contenant la liste des technos nécessaires et le nombre de devs requis par techno
 
 A partir de là, le management va interroger notre système pour connaître la liste des devs disponibles à la date de démarrage de projet et qui correspondent aux critères demandés.
 Ensuite, il va pouvoir affecter une équipe sur le projet.
@@ -44,27 +39,30 @@ Une demande de projet peut être rejetée si aucun.e dev n'a les compétences re
 - Un.e dev a une liste de compétences techniques
 - Son niveau technique sur une compétence est définie par son nombre d'années d'expérience : 0-3 ans, junior.e. 3-5 ans, expérimenté.e. Plus de 5 ans, expert.e
 
-
-
 # Réalisation
 
 L'application se présentera sous la forme d'une webapp exposant une API REST que nous pourrons interroger avec un outil comme curl ou postman
 
-
 ## Les fonctionnalités :
-- Accueillir un.e dev au sein de la société (embauche)
-- Exclure un.e dev de la société (démission)- Lister tous les devs correspondant à une compétence et un niveau donné- Lister tous les projets terminés, en cours ou prévus- Connaître le prochain projet qui va démarrer
-- Annuler un projet prévu
-- Traiter une demande de nouveau projet- Connaître le CV d'un.e dev (la liste de ses projets et ses compétences)- Transférer un.e dev dans une autre équipe
 
+- Accueillir un.e dev au sein de la société (embauche)
+- Exclure un.e dev de la société (démission)
+- Lister tous les devs correspondant à une compétence et un niveau donné
+- Lister tous les projets terminés, en cours ou prévus
+- Connaître le prochain projet qui va démarrer
+- Annuler un projet prévu
+- Traiter une demande de nouveau projet
+- Connaître le CV d'un.e dev (la liste de ses projets et ses compétences)
+- Transférer un.e dev dans une autre équipe
 
 ## La stack :
+
 - Java 18 (au moins)
 - le framework Javalin pour la partie REST
 - pour le stockage de données, un fichier (texte, json, xml, etc.) sera amplement suffisant
 
-
 # Règles générales :
+
 - Pour la partie Javalin, le cours abordera les concepts de programmation fonctionnelle nécessaire courant janvier. Si vous souhaitez commencer avant, faites-moi signe
 - Concentrez-vous sur une fonctionnalité à la fois et terminez-la avant de passer à la suivante. N'essayez pas de faire des bouts de chaque
 - On s'accorde à ce que le système puisse mettre quelques secondes pour répondre. Comprendre : concentrez-vous sur le code et les principes objets plutôt que sur de potentielles optimisations
@@ -72,3 +70,8 @@ L'application se présentera sous la forme d'une webapp exposant une API REST qu
 - Ce serait bien dommage que je trouve un code uniquement en lisant votre code. Pensez aux tests !
 - Ne perdez pas votre temps à faire plus que l'énoncé : pas besoin de base de données ou d'UI...
 - Si vous avez la moindre interrogation, posez vos questions. N'essayez surtout pas de deviner. C'est le meilleur moyen de vous tromper
+
+-preparer la base de données
+-service qui interoge la base de donnée
+-options menu generale (management/dev)
+-system qui attribue les projets au differents type de projets
