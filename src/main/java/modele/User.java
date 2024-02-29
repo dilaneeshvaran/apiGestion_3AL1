@@ -5,9 +5,9 @@ import java.util.List;
 public class User {
     private String mail;
     private String name;
-    private List<String> competence;
+    private List <List<Object>> competence;
 
-    public User(String mail, String name, List<String> competence) {
+    public User(String mail, String name, List <List<Object>> competence) {
         this.mail = mail;
         this.name = name;
         this.competence = competence;
@@ -29,11 +29,11 @@ public class User {
         this.name = name;
     }
 
-    public List<String> getCompetence() {
+    public List <List<Object>> getCompetence() {
         return competence;
     }
 
-    public void setCompetence(List<String> competence) {
+    public void setCompetence(List <List<Object>> competence) {
         this.competence = competence;
     }
 }

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import BDD.Database;
@@ -13,7 +14,26 @@ public class Main {
 
        //List<String> developers = database.fetchAllDevelopers();
        List<User> users = database.fetchAllDevelopers();
-       database.addMemberToTeam(0,users.get(1));
+       //database.addMemberToTeam(0,users.get(1));
+
+       //new skill list for testing
+       List <List<Object>> competence= new ArrayList<>();
+
+       List<Object> skillset1 = new ArrayList<>();
+       skillset1.add("c#");
+        skillset1.add(8);
+        competence.add(skillset1);
+
+        List<Object> skillset2 = new ArrayList<>();
+        skillset2.add("js");
+        skillset2.add(10);
+        competence.add(skillset2);
+
+       //create new user to test recruit
+       User user=new User("jd@gmail.com", "kokku", competence);
+       //database.recruitDeveloper(user);
+       //database.fireDeveloper(user);
+       database.transferDev(user, 0, 1);
 
         var app = Javalin.create(/*config*/)
                 .get("/", ctx -> {

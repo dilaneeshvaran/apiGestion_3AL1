@@ -2,14 +2,10 @@
   "company": [
     {
       "teams": [
-        {
-          "project_id": 0,
-          "members": [["jd@gmail.com"], ["ss@gmail.com"]],
-          "team_id": 0
-        },
+        { "project_id": 0, "members": ["ss@gmail.com"], "team_id": 0 },
         {
           "project_id": 1,
-          "members": [["jd@gmail.com"], ["ss@gmail.com"]],
+          "members": ["ss@gmail.com", "jd@gmail.com"],
           "team_id": 1
         }
       ],

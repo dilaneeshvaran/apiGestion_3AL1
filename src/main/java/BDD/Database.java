@@ -47,7 +47,7 @@ public JSONArray readJsonFile() {
 
             for (Object dev : developers) {
                 JSONObject person = (JSONObject) dev;
-                user = new User((String) person.get("mail"), (String) person.get("name"), (List<String>) person.get("competence"));
+                user = new User((String) person.get("mail"), (String) person.get("name"), (List <List<Object>>) person.get("competence"));
                 System.out.println("competence::::::::::::::" +person.get("competence"));
                 userList.add(user);
             }
@@ -77,20 +77,32 @@ public JSONArray readJsonFile() {
 
 public void addMemberToTeam(int teamId, User member) {
     JSONArray data = readJsonFile();
+    boolean memberExist = false;
 
     for (Object companyObj : data) {
         JSONObject company = (JSONObject) companyObj;
         JSONArray teams = (JSONArray) company.get("teams");
-
+        
         for (Object teamObj : teams) {
             JSONObject team = (JSONObject) teamObj;
             Long teamIdLong = (Long) team.get("team_id");
             int id = teamIdLong.intValue();
             if (id == teamId) {
                 JSONArray members = (JSONArray) team.get("members");
-                members.add(member.getMail());
-                System.out.println("members::::::::::::::" + team.get("members"));
-                break;
+                for (Object memObj : members) {
+                    if (memObj instanceof String) {
+                        String mem = (String) memObj;
+                        if (member.getMail().equals(mem)) {
+                            memberExist=true;
+                            break;
+                        }
+                    }
+                }
+                if(!memberExist){
+                    members.add(member.getMail());
+                    System.out.println("members::::::::::::::" + team.get("members"));
+                    break;
+                }
             }
         }
     }
@@ -105,4 +117,122 @@ public void addMemberToTeam(int teamId, User member) {
         e.printStackTrace();
     }
 }
+
+public void recruitDeveloper(User member) {
+    JSONArray data = readJsonFile();
+
+    JSONObject dev;
+    String devId;
+    JSONArray developers;
+    boolean mailAlreadyExist = false;
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        developers = (JSONArray) company.get("developers");
+        for (Object devObj : developers) 
+        if (devObj instanceof JSONObject) {{
+            dev = (JSONObject) devObj;
+            devId = (String) dev.get("mail");
+            if (member.getMail().equals(devId)) {
+                mailAlreadyExist=true;
+                break;
+            }
+        }}
+        if (!mailAlreadyExist) {
+            JSONObject newDeveloper = new JSONObject();
+            newDeveloper.put("mail", member.getMail());
+            newDeveloper.put("name", member.getName());
+            newDeveloper.put("competence", member.getCompetence());
+            developers.add(newDeveloper);
+            System.out.println("devs::::::::::::::" + company.get("developers"));
+        }
+    }
+    JSONObject output = new JSONObject();
+    output.put("company", data);
+
+    try (FileWriter file = new FileWriter(filename)) {
+        file.write(output.toJSONString());
+        file.flush();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+public void fireDeveloper(User member)
+{
+    JSONArray data = readJsonFile();
+    JSONObject dev;
+    String devId;
+    JSONArray developers;
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        developers = (JSONArray) company.get("developers");
+        for (Object devObj : developers) {
+            dev = (JSONObject) devObj;
+            devId = (String) dev.get("mail");
+            if (member.getMail().equals(devId)) {
+                developers.remove(dev);
+                System.out.println("devs::::::::::::::" + company.get("developers"));
+                break;
+            }
+        }
+    }
+    JSONObject output = new JSONObject();
+    output.put("company", data);
+
+    try (FileWriter file = new FileWriter(filename)) {
+        file.write(output.toJSONString());
+        file.flush();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+}
+public void transferDev(User member, int fromTeam, int toTeam) {
+    JSONArray data = readJsonFile();
+    JSONArray teams;
+    JSONArray members;
+    boolean memberExist = false;
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        teams = (JSONArray) company.get("teams");
+        for (Object teamObj : teams) {
+            JSONObject team = (JSONObject) teamObj;
+            Long teamIdLong = (Long) team.get("team_id");
+            int id = teamIdLong.intValue();
+            if (id == fromTeam) {
+                members = (JSONArray) team.get("members");
+                for (Object memObj : members) {
+                    if (memObj instanceof String) {
+                        String mem = (String) memObj;
+                        if (member.getMail().equals(mem)) {
+                            memberExist = true;
+                            members.remove(mem);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (id == toTeam && memberExist) {
+                members = (JSONArray) team.get("members");
+                members.add(member.getMail());
+                System.out.println("members::::::::::::::" + team.get("members"));
+                break;
+            }
+        }
+    }
+    JSONObject output = new JSONObject();
+    output.put("company", data);
+
+    try (FileWriter file = new FileWriter(filename)) {
+        file.write(output.toJSONString());
+        file.flush();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
 }
