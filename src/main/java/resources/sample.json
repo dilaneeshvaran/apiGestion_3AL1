@@ -1,6 +1,36 @@
 {
   "company": [
     {
+      "projects": [
+        {
+          "endDate": "2018-02-31",
+          "requiredDevsPerStack": [
+            [2, "php"],
+            [5, "nodejs"],
+            [3, "java"]
+          ],
+          "name": "project1",
+          "description": "project1 description",
+          "priority": "high",
+          "projectId": 1,
+          "startDate": "2018-01-01",
+          "status": "finished"
+        },
+        {
+          "endDate": "2018-01-31",
+          "requiredDevsPerStack": [
+            [2, "php"],
+            [5, "nodejs"],
+            [3, "java"]
+          ],
+          "name": "project2",
+          "description": "project2 description",
+          "priority": "high",
+          "projectId": 2,
+          "startDate": "2018-01-01",
+          "status": "waiting"
+        }
+      ],
       "teams": [
         { "project_id": 0, "members": ["ss@gmail.com"], "team_id": 0 },
         {

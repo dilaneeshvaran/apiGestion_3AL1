@@ -1,6 +1,7 @@
 package BDD;
 
 import org.example.Equipe;
+import org.example.Projet;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -10,11 +11,12 @@ import modele.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private String filename="C:\\Users\\jilla\\IdeaProjects\\java-project-2\\src\\main\\java\\resources\\sample.json";
+    private String filename="src\\main\\java\\resources\\sample.json";
 
     @SuppressWarnings("unchecked")
 public JSONArray readJsonFile() {
@@ -233,6 +235,83 @@ public void transferDev(User member, int fromTeam, int toTeam) {
         e.printStackTrace();
     }
 }
+
+public List<User> getDevByStackXp(String stack, int xp) {
+    JSONArray data = readJsonFile();
+    User user = null;
+    List<User> userList = new ArrayList<>();
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        JSONArray developers = (JSONArray) company.get("developers");
+        for (Object dev : developers) {
+            JSONObject person = (JSONObject) dev;
+            user = new User((String) person.get("mail"), (String) person.get("name"), (List <List<Object>>) person.get("competence"));
+            for (Object competence : user.getCompetence()) {
+                List<Object> skillset = (List<Object>) competence;
+                if (skillset.get(0).equals(stack) && (Long) skillset.get(1) >= xp) {
+                    userList.add(user);
+                }
+            }
+        }
+    }
+    return userList;
+}
+
+
+public Projet nextStartingProject() {
+    JSONArray data = readJsonFile();
+    Projet projet = null;
+    List<Projet> projets = new ArrayList<>();
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        JSONArray projects = (JSONArray) company.get("projects");
+        for (Object proj : projects) {
+            JSONObject project = (JSONObject) proj;
+            if (project.get("status").equals("waiting")) {
+                projet = new Projet((int) (long) project.get("projectId"), (String) project.get("name"), (String) project.get("description"), (String) project.get("endDate"), (String) project.get("startDate"), (String) project.get("priority"), (String) project.get("status"), (List <List<Object>>) project.get("requiredDevsPerStack"));
+                projets.add(projet);
+            }
+        }
+    }
+    projets.sort((p1, p2) -> p1.getDateDebut().compareTo(p2.getDateDebut()));
+    return projets.get(0);
+
+}
+
+public void removeProjets(int projectId)
+    {
+        JSONArray data = readJsonFile();
+        JSONArray projects ;
+        JSONObject projectToRemove = null;
+
+        for (Object obj : data){
+            JSONObject company = (JSONObject) obj;
+            projects = (JSONArray) company.get("projects");
+            for (Object projectsObj: projects){
+                JSONObject project = (JSONObject) projectsObj;
+                long id = (long) project.get("projectId");
+                        if (id == projectId) {
+                            projectToRemove = project;
+                            break;
+                        }
+            }
+            if (projectToRemove != null) {
+                projects.remove(projectToRemove);
+                break;
+            }
+        }
+        JSONObject output = new JSONObject ( );
+        output.put("company", data);
+
+        try(FileWriter file = new FileWriter(filename)) {
+            file.write(output.toJSONString( ));
+            file.flush ( );
+        } catch (IOException e) {
+            e.printStackTrace( );
+        }
+    }
 
 
 }

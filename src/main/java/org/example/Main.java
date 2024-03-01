@@ -31,9 +31,12 @@ public class Main {
 
        //create new user to test recruit
        User user=new User("jd@gmail.com", "kokku", competence);
+       database.removeProjets(0);
+       Projet project = database.nextStartingProject();
        //database.recruitDeveloper(user);
        //database.fireDeveloper(user);
-       database.transferDev(user, 0, 1);
+       //database.transferDev(user, 0, 1);
+       List<User> usersBySkill = database.getDevByStackXp("php", 2);
 
         var app = Javalin.create(/*config*/)
                 .get("/", ctx -> {
@@ -41,7 +44,7 @@ public class Main {
 
             // Set JSON data as response
             //ctx.result(developers.get(0));
-            ctx.result(users.get(1).getName());
+            ctx.result(project.getNom());
             //user.getName();
         })
         .start(7070);

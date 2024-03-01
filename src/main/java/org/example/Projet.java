@@ -1,22 +1,26 @@
 package org.example;
 
+import java.util.List;
+
 public class Projet {
     private int id;
     private String nom;
     private String descriptif;
     private String dateFin;
     private String dateDebut;
-    private Equipe equipe;
     private String priority;
+    private String status;
+    private List <List<Object>> requiredDevsPerStack;
 
-    public Projet(int id, String nom, String descriptif, String dateFin, String dateDebut, Equipe equipe, String priority) {
+
+    public Projet(int id, String nom, String descriptif, String dateFin, String dateDebut, String priority,String status,List <List<Object>> requiredDevsPerStack) {
         this.id = id;
         this.nom = nom;
         this.descriptif = descriptif;
         this.dateFin = dateFin;
         this.dateDebut = dateDebut;
-        this.equipe = equipe;
         this.priority = priority;
+        this.status = status;
     }
 
     public int getId() {
@@ -39,6 +43,22 @@ public class Projet {
         return descriptif;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setRequiredDevsPerStack(List<List<Object>> requiredDevsPerStack) {
+        this.requiredDevsPerStack = requiredDevsPerStack;
+    }
+
+    public List<List<Object>> getRequiredDevsPerStack() {
+        return requiredDevsPerStack;
+    }
+
     public void setDescriptif(String descriptif) {
         this.descriptif = descriptif;
     }
@@ -57,14 +77,6 @@ public class Projet {
 
     public void setDateDebut(String dateDebut) {
         this.dateDebut = dateDebut;
-    }
-
-    public Equipe getEquipe() {
-        return equipe;
-    }
-
-    public void setEquipe(Equipe equipe) {
-        this.equipe = equipe;
     }
 
     public String getPriority() {
