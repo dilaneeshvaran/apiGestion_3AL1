@@ -12,8 +12,12 @@ import modele.User;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Database {
     private String filename="src\\main\\java\\resources\\sample.json";
@@ -57,26 +61,6 @@ public JSONArray readJsonFile() {
         return userList;
     }
 
-    public List<String> fetchAllProjects() {
-        List<String> projects = new ArrayList<>();
-
-        for (Object dataObj : projects) {
-            JSONObject data = (JSONObject) dataObj;
-            projects.add((String) data.get("projectName"));
-        }
-        return projects;
-    }
-
-    public List<String> fetchAllTeams() {
-        List<String> teams = new ArrayList<>();
-
-        for (Object dataObj : teams) {
-            JSONObject data = (JSONObject) dataObj;
-            teams.add((String) data.get("teamName"));
-        }
-        return teams;
-    }
-
 public void addMemberToTeam(int teamId, User member) {
     JSONArray data = readJsonFile();
     boolean memberExist = false;
@@ -109,6 +93,31 @@ public void addMemberToTeam(int teamId, User member) {
         }
     }
 
+    JSONObject output = new JSONObject();
+    output.put("company", data);
+
+    try (FileWriter file = new FileWriter(filename)) {
+        file.write(output.toJSONString());
+        file.flush();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
+public void createTeam(Equipe equipe)
+{
+    JSONArray data = readJsonFile();
+    JSONArray teams;
+    JSONObject newTeam = new JSONObject();
+    newTeam.put("team_id", equipe.getId());
+    newTeam.put("members", equipe.getMembers());
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        teams = (JSONArray) company.get("teams");
+        teams.add(newTeam);
+    }
     JSONObject output = new JSONObject();
     output.put("company", data);
 
@@ -313,5 +322,79 @@ public void removeProjets(int projectId)
         }
     }
 
+   public void proposeProject(Projet project)
+{
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+    LocalDate startDate = LocalDate.parse(project.getDateDebut(), formatter);
+    LocalDate endDate = LocalDate.parse(project.getDateFin(), formatter);
+
+    // Check if projet is more than 1 month
+    long duration = ChronoUnit.MONTHS.between(startDate, endDate);
+    if (duration <= 1) {
+        System.out.println("Project must last more than 1 month");
+        return;
+    }
+
+    // Check end date is afetr start date
+    if (startDate.compareTo(endDate) >= 0) {
+        System.out.println("End date should be after start date");
+        return;
+    }
+    List<String> members = new ArrayList<>();
+    Equipe equipe=null;
+    List<User> devs = new ArrayList<>();
+    
+    if(project.getRequiredDevsPerStack().size() >= 0) {
+        for (List<Object> stack : project.getRequiredDevsPerStack()) {
+            devs = getDevByStackXp((String) stack.get(1), (int) stack.get(0));
+            if (devs.size() == 0) {
+                System.out.println("Project canceled, no available devs for stack " + stack.get(0));
+                return;
+            } else {
+                for (User dev : devs) {
+                    if (!members.contains(dev.getMail())) {
+                        members.add(dev.getMail());
+                        break;
+                    }
+                }
+            }
+            equipe = new Equipe(3, members);
+        }
+        createTeam(equipe);
+    }
+
+
+    JSONArray data = readJsonFile();
+    JSONArray projects;
+    JSONObject newProject = new JSONObject();
+    newProject.put("projectId", project.getId());
+    newProject.put("name", project.getNom());
+    newProject.put("description", project.getDescriptif());
+    newProject.put("endDate", project.getDateFin());
+    newProject.put("startDate", project.getDateDebut());
+    newProject.put("priority", project.getPriority());
+    newProject.put("status", project.getStatus());
+    newProject.put("requiredDevsPerStack", project.getRequiredDevsPerStack());
+    newProject.put("team_id", equipe.getId());
+    
+
+    for (Object companyObj : data) {
+        JSONObject company = (JSONObject) companyObj;
+        projects = (JSONArray) company.get("projects");
+        projects.add(newProject);
+    }
+    JSONObject output = new JSONObject();
+    output.put("company", data);
+
+    try (FileWriter file = new FileWriter(filename)) {
+        file.write(output.toJSONString());
+        file.flush();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
 }

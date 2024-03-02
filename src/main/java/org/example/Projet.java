@@ -21,6 +21,7 @@ public class Projet {
         this.dateDebut = dateDebut;
         this.priority = priority;
         this.status = status;
+        this.requiredDevsPerStack = requiredDevsPerStack;
     }
 
     public int getId() {

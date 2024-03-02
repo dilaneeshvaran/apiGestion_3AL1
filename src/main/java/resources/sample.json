@@ -11,6 +11,7 @@
           ],
           "name": "project1",
           "description": "project1 description",
+          "team_id": 0,
           "priority": "high",
           "projectId": 1,
           "startDate": "2018-01-01",
@@ -25,6 +26,7 @@
           ],
           "name": "project2",
           "description": "project2 description",
+          "team_id": 0,
           "priority": "high",
           "projectId": 2,
           "startDate": "2018-01-01",
@@ -32,12 +34,8 @@
         }
       ],
       "teams": [
-        { "project_id": 0, "members": ["ss@gmail.com"], "team_id": 0 },
-        {
-          "project_id": 1,
-          "members": ["ss@gmail.com", "jd@gmail.com"],
-          "team_id": 1
-        }
+        { "members": ["ss@gmail.com"], "team_id": 0 },
+        { "members": ["ss@gmail.com", "jd@gmail.com"], "team_id": 1 }
       ],
       "developers": [
         {

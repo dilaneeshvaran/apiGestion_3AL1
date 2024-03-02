@@ -18,7 +18,6 @@ public class Main {
 
        //new skill list for testing
        List <List<Object>> competence= new ArrayList<>();
-
        List<Object> skillset1 = new ArrayList<>();
        skillset1.add("c#");
         skillset1.add(8);
@@ -29,6 +28,19 @@ public class Main {
         skillset2.add(10);
         competence.add(skillset2);
 
+        List <List<Object>> requiredDevsPerStack= new ArrayList<>();
+        List<Object> stack1 = new ArrayList<>();
+        stack1.add(2);
+        stack1.add("php");
+        requiredDevsPerStack.add(stack1);
+
+        List<Object> stack2 = new ArrayList<>();
+        stack2.add(3);
+        stack2.add("java");
+        requiredDevsPerStack.add(stack2);
+
+       
+
        //create new user to test recruit
        User user=new User("jd@gmail.com", "kokku", competence);
        database.removeProjets(0);
@@ -37,6 +49,9 @@ public class Main {
        //database.fireDeveloper(user);
        //database.transferDev(user, 0, 1);
        List<User> usersBySkill = database.getDevByStackXp("php", 2);
+
+       Projet newProject = new Projet(0, "projet1", "description", "2021-12-12", "2021-10-11", "high", "in progress", requiredDevsPerStack);
+       database.proposeProject(newProject);
 
         var app = Javalin.create(/*config*/)
                 .get("/", ctx -> {

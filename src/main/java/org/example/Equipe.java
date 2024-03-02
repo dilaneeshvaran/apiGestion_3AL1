@@ -7,12 +7,10 @@ import modele.User;
 public class Equipe {
 
     private int id;
-    private int project_id;
     private List<String> members;
 
-    public Equipe(int id, int project_id, List<String> members) {
+    public Equipe(int id,  List<String> members) {
         this.id = id;
-        this.project_id = project_id;
         this.members = members;
     }
 
@@ -22,14 +20,6 @@ public class Equipe {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getProject_id() {
-        return project_id;
-    }
-
-    public void setProject_id(int project_id) {
-        this.project_id = project_id;
     }
 
     public List<String> getMembers() {
